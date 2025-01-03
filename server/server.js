@@ -1,6 +1,8 @@
+if(process.env.NODE_ENV!=='production')require('dotenv').config();
 const mongoose = require('mongoose');
 const Document=require('./document')
-mongoose.connect('mongodb://127.0.0.1:27017/doc');
+const MONGO_URL=process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/doc'
+mongoose.connect(MONGO_URL);
 
 const defaultValue="";
 
@@ -15,10 +17,11 @@ async function findOrCreateDocument(id)
     return newDoc;
 }
 
-
-const io=require('socket.io')(3000,{
+const frontend_port=process.env.FRONTEND_PORT || 5173;
+const backend_port=process.env.BACKEND_PORT || 3000;
+const io=require('socket.io')(backend_port,{
     cors:{
-        origin:"http://localhost:5173",
+        origin:`http://localhost:${frontend_port}`,
         methods:['GET','POST']
     }
 })
