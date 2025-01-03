@@ -28,7 +28,7 @@ const io=require('socket.io')(backend_port,{
 
 
 io.on('connection',socket=>{
-    console.log("connected");
+    //console.log("connected");
 
     socket.on('get-document',async(docId)=>{
         const doc=await findOrCreateDocument(docId);
